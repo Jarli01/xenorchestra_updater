@@ -1,21 +1,37 @@
 #!/bin/bash
 
-sudo kill $(ps aux | grep "node bin/xo-server" | grep -v grep | cut -d' ' -f8)
+updateFromSource ()
+{
+echo Current version $(git describe --abbrev=0)
+sleep 10s
+sudo git fetch origin
+output=$( sudo git rev-list HEAD...origin/master --count )
+echo $output updates available
 
+if [[ $output -ne 0 ]]; then
+  echo "Updating from source..."
+  sudo git pull
+  sudo npm i
+  sudo npm run build
+  echo Updated version $(git describe --abbrev=0)
+fi
+}
+
+isActive=$(systemctl is-active xo-server)
+if [ "$isActive" == "active" ]; then
+  sudo systemctl stop xo-server
+else
+  sudo pkill -f "/bin/xo-server"
+fi
+
+echo "Checking xo-server..."
 cd /opt/xo-server
-git describe 
-sleep 10s
-sudo git pull
-sudo npm i
-sudo npm run build
+updateFromSource
 
+echo "Checking xo-web..."
 cd /opt/xo-web
-git describe
-sleep 10s
-sudo git pull
-sudo npm i
-sudo npm run build
+updateFromSource
 
 sleep 15s
 
-sudo shutdown -r now "System will reboot in 2 minutes to perform updates."
+sudo shutdown -r now "System will reboot now to perform updates."
