@@ -5,7 +5,8 @@ updateFromSource ()
 echo Current version $(git describe --abbrev=0)
 sleep 10s
 sudo git fetch origin
-output=$( sudo git rev-list HEAD...origin/master --count )
+REMOTE=$(git rev-parse @{u})
+output=$( sudo git rev-list HEAD...$REMOTE --count )
 echo $output updates available
 
 if [[ $output -ne 0 ]]; then
