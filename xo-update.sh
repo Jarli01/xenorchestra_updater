@@ -18,6 +18,7 @@ if [[ $output -ne 0 ]]; then
 fi
 }
 
+echo "Stopping xo-server..."
 isActive=$(systemctl is-active xo-server)
 if [ "$isActive" == "active" ]; then
   sudo systemctl stop xo-server
@@ -33,6 +34,11 @@ echo "Checking xo-web..."
 cd /opt/xo-web
 updateFromSource
 
-sleep 15s
+sleep 5s
 
-sudo shutdown -r now "System will reboot now to perform updates."
+if [ "$isActive" == "active" ]; then
+  echo "Restarting xo-server..."
+  sudo systemctl start xo-server
+else
+  echo "Please manually restart xo-server"
+fi
