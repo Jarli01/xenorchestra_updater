@@ -4,7 +4,7 @@ updateFromSource ()
 {
 echo Current version $(git describe --abbrev=0)
 sleep 10s
-sudo git fetch origin
+sudo git fetch origin -q
 REMOTE=$(git rev-parse @{u})
 output=$( sudo git rev-list HEAD...$REMOTE --count )
 echo $output updates available
