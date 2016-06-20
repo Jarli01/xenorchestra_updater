@@ -4,7 +4,7 @@ updateFromSource ()
 {
 echo Current version $(git describe --abbrev=0)
 sleep 10s
-sudo git fetch origin
+sudo git fetch origin -q
 REMOTE=$(git rev-parse @{u})
 output=$( sudo git rev-list HEAD...$REMOTE --count )
 echo $output updates available
@@ -18,6 +18,7 @@ if [[ $output -ne 0 ]]; then
 fi
 }
 
+echo "Stopping xo-server..."
 isActive=$(systemctl is-active xo-server)
 if [ "$isActive" == "active" ]; then
   sudo systemctl stop xo-server
@@ -33,6 +34,11 @@ echo "Checking xo-web..."
 cd /opt/xo-web
 updateFromSource
 
-sleep 15s
+sleep 5s
 
-sudo shutdown -r now "System will reboot now to perform updates."
+if [ "$isActive" == "active" ]; then
+  echo "Restarting xo-server..."
+  sudo systemctl start xo-server
+else
+  echo "Please manually restart xo-server"
+fi
