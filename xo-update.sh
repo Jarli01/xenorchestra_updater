@@ -2,6 +2,7 @@
 
 updateFromSource ()
 {
+echo Current branch $(git rev-parse --abbrev-ref HEAD)
 echo Current version $(git describe --abbrev=0)
 sleep 10s
 sudo git fetch origin -q
