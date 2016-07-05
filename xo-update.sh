@@ -27,6 +27,9 @@ else
   sudo pkill -f "/bin/xo-server"
 fi
 
+echo "Updating n..."
+sudo n stable
+
 echo "Checking xo-server..."
 cd /opt/xo-server
 updateFromSource
