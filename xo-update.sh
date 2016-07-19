@@ -13,6 +13,10 @@ echo $output updates available
 if [[ $output -ne 0 ]]; then
   echo "Updating from source..."
   sudo git pull
+  sudo rm -rf dist
+  cd node_modules
+  find * -maxdepth 0 -name 'xo-server-*' -prune -o -exec rm -rf {} \; 
+  cd ..
   sudo npm i
   sudo npm run build
   echo Updated version $(git describe --abbrev=0)
@@ -26,6 +30,9 @@ if [ "$isActive" == "active" ]; then
 else
   sudo pkill -f "/bin/xo-server"
 fi
+
+echo "Updating Node.js to latest stable version..."
+sudo n stable
 
 echo "Checking xo-server..."
 cd /opt/xo-server
