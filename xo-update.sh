@@ -13,16 +13,18 @@ fi
 
 sudo git fetch origin -q
 REMOTE=$(git rev-parse @{u})
-output=$( sudo git rev-list HEAD...$REMOTE --count )
-echo $output updates available
+REVISIONS=$( sudo git rev-list HEAD...$REMOTE --count )
+echo $REVISIONS updates available
 
-if [ $output -ne 0 ] || [ "$FORCE" = true ]; then
+if [ $REVISIONS -ne 0 ] || [ "$FORCE" = true ]; then
   echo "Updating from source..."
   sudo git pull
+  echo "Clearing directories..."
   sudo rm -rf dist
   cd node_modules
   find * -maxdepth 0 -name 'xo-server-*' -prune -o -exec rm -rf {} \; 
   cd ..
+  echo "Building from source..."  
   sudo npm i
   sudo npm run build
   echo Updated version $(git describe --abbrev=0)
@@ -30,7 +32,7 @@ fi
 }
 
 main() {
-	if [ "$EUID" -ne 0 ]; then 
+	if [ "$EUID" -ne 0 ]; then
 		echo "Please run as root (sudo bash)"
 		exit
 	fi
@@ -59,8 +61,8 @@ main() {
 	done
 
 	echo "Stopping xo-server..."
-	isActive=$(systemctl is-active xo-server)
-	if [ "$isActive" == "active" ]; then
+	ISACTIVE=$(systemctl is-active xo-server)
+	if [ "$ISACTIVE" == "active" ]; then
 	  sudo systemctl stop xo-server
 	else
 	  sudo pkill -f "/bin/xo-server"
