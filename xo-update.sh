@@ -83,7 +83,7 @@ main() {
 
 	sleep 5s
 
-	if [ "$isActive" == "active" ]; then
+	if [ "$ISACTIVE" == "active" ]; then
 	  echo "Restarting xo-server..."
 	  sudo systemctl start xo-server
 	else
