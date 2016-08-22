@@ -19,12 +19,18 @@ echo $REVISIONS updates available
 if [ $REVISIONS -ne 0 ] || [ "$FORCE" = true ]; then
   echo "Updating from source..."
   sudo git pull
+<<<<<<< HEAD
   echo "Clearing directories..."
+=======
+>>>>>>> refs/remotes/Jarli01/master
   sudo rm -rf dist
   cd node_modules
   find * -maxdepth 0 -name 'xo-server-*' -prune -o -exec rm -rf {} \; 
   cd ..
+<<<<<<< HEAD
   echo "Building from source..."  
+=======
+>>>>>>> refs/remotes/Jarli01/master
   sudo npm i
   sudo npm run build
   echo Updated version $(git describe --abbrev=0)
@@ -37,6 +43,7 @@ main() {
 		exit
 	fi
 
+<<<<<<< HEAD
 	while getopts b:fn: opt; do
 		case $opt in
 			b)
@@ -48,6 +55,14 @@ main() {
 				fi;;
 				
 			f)	FORCE=true;;
+=======
+echo "Updating Node.js to latest stable version..."
+sudo n stable
+
+echo "Checking xo-server..."
+cd /opt/xo-server
+updateFromSource
+>>>>>>> refs/remotes/Jarli01/master
 
 			n)
 				NODE=true
