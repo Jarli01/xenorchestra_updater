@@ -5,10 +5,10 @@ A simple tool to pull 'next-release' or 'stable' Xen Orchestra updates and apply
 ## Options
 
 | Param | Action           | Argument  |
-| ----- |:----------------:|------|
+|:-----:|:----------------|------|
 |  -f   | Force rebuild |
-|  -b   | Switch branch | stable \| next-release    |
-|  -n   | Switch node   | lts \| stable \| 4.5.0      |
+|  -b   | Switch git branch | stable \| next-release    |
+|  -n   | Change node version  | lts \| stable \| 4.5.0      |
 
 ## Examples
 
@@ -19,7 +19,7 @@ sudo bash
 sudo curl https://raw.githubusercontent.com/Jarli01/xenorchestra_updater/master/xo-update.sh | bash
 ```
 
-### Force update
+### Force rebuild
 ```
 sudo bash
 <password>
