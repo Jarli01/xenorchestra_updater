@@ -31,6 +31,17 @@ if [ $REVISIONS -ne 0 ] || [ "$FORCE" = true ]; then
 fi
 }
 
+installPackage()
+{
+	[[ -z $1 ]] && { echo "${FUNCNAME}(): package name not specified"; exit 1; }
+	
+	if [ $(dpkg-query -W -f='${Status}' $1 2>/dev/null | grep -c "ok installed") -eq 0 ];
+	then
+		sudo apt-get install $1 || echo "Installation of $1 failed" && exit
+	fi
+
+}
+
 main() {
 	if [ "$EUID" -ne 0 ]; then
 		echo "Please run as root (sudo bash)"
@@ -72,6 +83,9 @@ main() {
 		echo "Updating Node.js to '$VERSION' version..."
 		sudo n "$VERSION"
 	fi
+	
+	installPackage libvhdi-utils
+	installPackage fuse
 	
 	echo "Checking xo-server..."
 	cd /opt/xo-server
