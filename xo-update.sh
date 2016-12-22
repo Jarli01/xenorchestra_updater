@@ -33,13 +33,11 @@ fi
 
 installPackage()
 {
-	[[ -z $1 ]] && { echo "${FUNCNAME}(): package name not specified"; exit 1; }
-	
-	if [ $(dpkg-query -W -f='${Status}' $1 2>/dev/null | grep -c "ok installed") -eq 0 ];
-	then
-		sudo apt-get install $1 || echo "Installation of $1 failed" && exit
-	fi
+[[ -z $1 ]] && { echo "${FUNCNAME}(): package name not specified"; exit 1; }
 
+if [ $(dpkg-query -W -f='${Status}' $1 2>/dev/null | grep -c "ok installed") -eq 0 ]; then
+  sudo apt-get install $1 || echo "Installation of $1 failed" 
+fi
 }
 
 main() {
