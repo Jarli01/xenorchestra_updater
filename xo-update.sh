@@ -18,13 +18,15 @@ echo $REVISIONS updates available
 
 if [ $REVISIONS -ne 0 ] || [ "$FORCE" = true ]; then
   echo "Updating from source..."
+  sudo git stash -u
   sudo git pull
   echo "Clearing directories..."
   sudo rm -rf dist
   cd node_modules
   find * -maxdepth 0 -name 'xo-server-*' -prune -o -exec rm -rf {} \; 
   cd ..
-  echo "Building from source..."  
+  echo "Building from source..." 
+  sed -i 's/< 5/> 0/g' /opt/xo-web/src/xo-app/settings/config/index.js
   sudo npm i
   sudo npm run build
   echo Updated version $(git describe --abbrev=0)
