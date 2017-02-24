@@ -25,7 +25,7 @@ if [ $REVISIONS -ne 0 ] || [ "$FORCE" = true ]; then
   cd node_modules
   find * -maxdepth 0 -name 'xo-server-*' -prune -o -exec rm -rf {} \; 
   cd ..
-  echo "Building from source..."  
+  echo "Installing..."  
   sed -i 's/< 5/> 0/g' /opt/xo-web/src/xo-app/settings/config/index.js
   sed -i 's/< 5/> 0/g' /opt/xo-web/src/xo-app/xosan/index.js
   sudo npm i
