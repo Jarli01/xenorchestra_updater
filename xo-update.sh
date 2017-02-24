@@ -27,7 +27,7 @@ if [ $REVISIONS -ne 0 ] || [ "$FORCE" = true ]; then
   cd ..
   echo "Building from source..."  
   sed -i 's/< 5/> 0/g' /opt/xo-web/src/xo-app/settings/config/index.js
-  
+  sed -i 's/< 5/> 0/g' /opt/xo-web/src/xo-app/xosan/index.js
   sudo npm i
   sudo npm run build
   echo Updated version $(git describe --abbrev=0)
