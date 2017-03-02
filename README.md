@@ -2,6 +2,14 @@
 
 A simple tool to pull Xen Orchestra updates and apply the settings to your XO installation.
 
+### Basic operation (without updating the local update script)
+
+``` sudo ./xo-update -f``` to force a clean installation
+
+``` sudo ./xo-update -b next-release```  to switch to "next-release" branch 
+
+
+
 ## Options
 
 | Param | Action           | Argument  |
