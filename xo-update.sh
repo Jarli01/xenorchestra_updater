@@ -28,7 +28,7 @@ if [ $REVISIONS -ne 0 ] || [ "$FORCE" = true ]; then
   echo "Installing..."  
   sed -i 's/< 5/> 0/g' /opt/xo-web/src/xo-app/settings/config/index.js
   sed -i 's/< 5/> 0/g' /opt/xo-web/src/xo-app/xosan/index.js
-  sudo yarn
+  yarn install --force
   echo Updated version $(git describe --abbrev=0)
 fi
 }
