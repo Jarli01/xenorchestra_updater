@@ -41,7 +41,9 @@ sudo bash
 <password>
 sudo curl https://raw.githubusercontent.com/Jarli01/xenorchestra_updater/master/xo-update.sh | bash -s -- -n stable
 ```
+
 ### Installing Yarn
+Yarn is a required dependency of XO as of (March 2017) this is a one time operation and not to be used repeatedly. 
 ```
 curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add - 
 echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
