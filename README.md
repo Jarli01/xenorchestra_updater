@@ -2,13 +2,6 @@
 
 A simple tool to pull Xen Orchestra updates and apply the settings to your XO installation.
 
-### Basic operation (without updating the local update script)
-
-``` sudo ./xo-update -f``` to force a clean installation
-
-``` sudo ./xo-update -b next-release```  to switch to "next-release" branch 
-
-
 
 ## Options
 
@@ -18,7 +11,8 @@ A simple tool to pull Xen Orchestra updates and apply the settings to your XO in
 |  -b   | Switch git branch | stable \| next-release    |
 |  -n   | Change node version  | lts \| stable \| 4.5.0      |
 
-## Examples
+## Production Operations - Staying current
+Basic usage, force rebuild, switch branch are the preferred operations, as you'll stay current with us. 
 
 ### Basic usage
 ```
@@ -52,3 +46,10 @@ sudo curl https://raw.githubusercontent.com/Jarli01/xenorchestra_updater/master/
 curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add - 
 echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
 sudo apt-get update && sudo apt-get install yarn
+```
+
+### Basic operation (without updating the local update script - local testing)
+
+``` sudo ./xo-update -f``` to force a clean installation
+
+``` sudo ./xo-update -b next-release```  to switch to "next-release" branch 
