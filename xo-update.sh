@@ -2,6 +2,8 @@
 
 updateFromSource ()
 {
+UPDATE=false
+
 echo Current branch $(git rev-parse --abbrev-ref HEAD)
 echo Current version $(git describe --abbrev=0)
 sleep 5s
@@ -17,6 +19,7 @@ REVISIONS=$( sudo git rev-list HEAD...$REMOTE --count )
 echo $REVISIONS updates available
 
 if [ $REVISIONS -ne 0 ] || [ "$FORCE" = true ]; then
+  UPDATE=true
   echo "Updating from source..."
   sudo git stash -u
   sudo git pull
@@ -25,12 +28,14 @@ if [ $REVISIONS -ne 0 ] || [ "$FORCE" = true ]; then
   cd node_modules
   find * -maxdepth 0 -name 'xo-server-*' -prune -o -exec rm -rf {} \; 
   cd ..
+fi
+}
+
+installUpdates()
+{
   echo "Installing..."  
-  sed -i 's/< 5/> 0/g' /opt/xo-web/src/xo-app/settings/config/index.js
-  sed -i 's/< 5/> 0/g' /opt/xo-web/src/xo-app/xosan/index.js
   yarn install --force
   echo Updated version $(git describe --abbrev=0)
-fi
 }
 
 main() {
@@ -74,15 +79,26 @@ main() {
 		echo "Updating Node.js to '$VERSION' version..."
 		sudo n "$VERSION"
 	fi
+
+	UPDATE=""
 	
 	echo "Checking xo-server..."
 	cd /opt/xo-server
 	updateFromSource
-
+	
+	if [ "$UPDATE" = true ]; then
+		installUpdates
+	fi
+	
 	echo "Checking xo-web..."
 	cd /opt/xo-web
 	updateFromSource
-
+	if [ "$UPDATE" = true ]; then
+		sed -i 's/< 5/> 0/g' /opt/xo-web/src/xo-app/settings/config/index.js
+		sed -i 's/< 5/> 0/g' /opt/xo-web/src/xo-app/xosan/index.js
+		installUpdates
+	fi
+	
 	sleep 5s
 
 	if [ "$ISACTIVE" == "active" ]; then
