@@ -80,6 +80,8 @@ main() {
 		sudo n "$VERSION"
 	fi
 
+	updateYarn
+	
 	UPDATE=""
 	
 	echo "Checking xo-server..."
@@ -107,6 +109,17 @@ main() {
 	else
 	  echo "Please manually restart xo-server"
 	fi
+}
+
+updateYarn()
+{
+	if [ $(dpkg-query -W -f='${Status}' yarn 2>/dev/null | grep -c "ok installed") -eq 0 ]; then
+		curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
+		echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
+	fi
+
+	sudo apt-get update
+	sudo apt-get install --yes yarn
 }
 
 main "$@"
