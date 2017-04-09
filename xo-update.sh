@@ -49,18 +49,18 @@ main() {
 			b)
 				BRANCH="$OPTARG"
 				FORCE=true
-				
+
 				if [ "$BRANCH" == "" ]; then
 					BRANCH="stable"
 				fi;;
-				
+
 			f)	FORCE=true;;
 
 			n)
 				NODE=true
 				FORCE=true
 				VERSION="$OPTARG"
-				
+
 				if [ "$VERSION" == "" ]; then
 					VERSION="lts"
 				fi;;
@@ -83,15 +83,15 @@ main() {
 	updateYarn
 	
 	UPDATE=""
-	
+
 	echo "Checking xo-server..."
 	cd /opt/xo-server
 	updateFromSource
-	
+
 	if [ "$UPDATE" = true ]; then
 		installUpdates
 	fi
-	
+
 	echo "Checking xo-web..."
 	cd /opt/xo-web
 	updateFromSource
@@ -100,7 +100,9 @@ main() {
 		sed -i 's/< 5/> 0/g' /opt/xo-web/src/xo-app/xosan/index.js
 		installUpdates
 	fi
-	
+
+	updatePlugins
+
 	sleep 5s
 
 	if [ "$ISACTIVE" == "active" ]; then
@@ -114,17 +116,24 @@ main() {
 updateYarn()
 {
 	echo "Checking for Yarn package..."
-	
+
 	if [ $(dpkg-query -W -f='${Status}' yarn 2>/dev/null | grep -c "ok installed") -eq 0 ]; then
 		echo "Installing Yarn..."
 		curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
 		echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
 	else
-		echo "Upgrading Yarn..."
+		echo "Checking for Yarn update..."
 	fi
 
 	sudo apt-get update > /dev/null
 	sudo apt-get install --yes yarn
+}
+
+updatePlugins()
+{
+	echo "Checking for updates to plugins..."
+	cd /opt/xo-server
+	find node_modules -maxdepth 1 -type d -name 'xo-server-*' -printf '%P\0' | xargs -0 yarn upgrade
 }
 
 main "$@"
