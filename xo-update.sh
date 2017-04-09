@@ -81,7 +81,6 @@ main() {
 	fi
 
 	updateYarn
-	updatePlugins
 	
 	UPDATE=""
 
@@ -101,6 +100,8 @@ main() {
 		sed -i 's/< 5/> 0/g' /opt/xo-web/src/xo-app/xosan/index.js
 		installUpdates
 	fi
+
+	updatePlugins
 
 	sleep 5s
 
