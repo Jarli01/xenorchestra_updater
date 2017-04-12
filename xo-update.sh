@@ -25,15 +25,12 @@ if [ $REVISIONS -ne 0 ] || [ "$FORCE" = true ]; then
   sudo git pull
   echo "Clearing directories..."
   sudo rm -rf dist
-  cd node_modules
-  find * -maxdepth 0 -name 'xo-server-*' -prune -o -exec rm -rf {} \; 
-  cd ..
 fi
 }
 
 installUpdates()
 {
-  echo "Installing..."  
+  echo "Installing..."
   yarn install --force
   echo Updated version $(git describe --abbrev=0)
 }
@@ -81,7 +78,7 @@ main() {
 	fi
 
 	updateYarn
-	
+
 	UPDATE=""
 
 	echo "Checking xo-server..."
@@ -89,19 +86,21 @@ main() {
 	updateFromSource
 
 	if [ "$UPDATE" = true ]; then
+		echo "Adding existing plugins to Yarn lock file..."
+		find node_modules -maxdepth 1 -type d -name 'xo-server-*' -printf '%P\0' | xargs -0 yarn upgrade
+
 		installUpdates
 	fi
 
 	echo "Checking xo-web..."
 	cd /opt/xo-web
 	updateFromSource
+
 	if [ "$UPDATE" = true ]; then
 		sed -i 's/< 5/> 0/g' /opt/xo-web/src/xo-app/settings/config/index.js
 		sed -i 's/< 5/> 0/g' /opt/xo-web/src/xo-app/xosan/index.js
 		installUpdates
 	fi
-
-	updatePlugins
 
 	sleep 5s
 
@@ -127,13 +126,6 @@ updateYarn()
 
 	sudo apt-get update > /dev/null
 	sudo apt-get install --yes yarn
-}
-
-updatePlugins()
-{
-	echo "Checking for updates to plugins..."
-	cd /opt/xo-server
-	find node_modules -maxdepth 1 -type d -name 'xo-server-*' -printf '%P\0' | xargs -0 yarn upgrade
 }
 
 main "$@"
