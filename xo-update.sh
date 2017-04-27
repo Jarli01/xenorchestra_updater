@@ -9,7 +9,8 @@ echo Current version $(git describe --abbrev=0)
 sleep 5s
 
 if [ "$BRANCH" != "" ]; then
-	#echo "Switching to branch '$BRANCH'..."
+	echo "Switching to branch '$BRANCH'..."
+	sudo git stash -u
 	sudo git checkout $BRANCH
 fi
 
