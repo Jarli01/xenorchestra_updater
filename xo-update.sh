@@ -10,7 +10,7 @@ sleep 5s
 
 if [ "$BRANCH" != "" ]; then
 	echo "Switching to branch '$BRANCH'..."
-	sudo git stash -u
+	sudo git diff-index --quiet HEAD -- || git stash -u && git stash drop
 	sudo git checkout $BRANCH
 fi
 
@@ -22,7 +22,7 @@ echo $REVISIONS updates available
 if [ $REVISIONS -ne 0 ] || [ "$FORCE" = true ]; then
   UPDATE=true
   echo "Updating from source..."
-  sudo git stash -u
+  sudo git diff-index --quiet HEAD -- || git stash -u && git stash drop
   sudo git pull
   echo "Clearing directories..."
   sudo rm -rf dist
