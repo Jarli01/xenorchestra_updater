@@ -32,7 +32,7 @@ fi
 installUpdates()
 {
   echo "Installing..."
-  yarn install --force
+  yarn build
   echo Updated version $(git describe --abbrev=0)
 }
 
