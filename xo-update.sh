@@ -32,6 +32,7 @@ fi
 installUpdates()
 {
   echo "Installing..."
+  yarn
   yarn build
   echo Updated version $(git describe --abbrev=0)
 }
