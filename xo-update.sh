@@ -85,6 +85,7 @@ main() {
 	UPDATE=""
 
 	echo "Checking xo-server..."
+	mkdir /opt/xen-orchestra
 	cd /opt/xen-orchestra
 	updateFromSource
 
