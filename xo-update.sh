@@ -133,7 +133,9 @@ updateYarn()
 }
 
 changeRepos()
-{	echo "Checking for Repo change..."
+{	
+	echo "Checking for Repo change..."
+	
 	if [ ! -d "/opt/xen-orchestra" ]; then
 		cd /opt
 		/usr/bin/git clone -b master https://github.com/vatesfr/xen-orchestra
