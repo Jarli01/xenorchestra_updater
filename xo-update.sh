@@ -80,11 +80,12 @@ main() {
 	fi
 
 	updateYarn
-
+	checkRepos
+	
 	UPDATE=""
 
 	echo "Checking xo-server..."
-	cd /opt/xo-server
+	cd /opt/xen-orchestra
 	updateFromSource
 
 	if [ "$UPDATE" = true ]; then
@@ -131,3 +132,13 @@ updateYarn()
 }
 
 main "$@"
+
+changeRepos()
+{	echo "Checking for Repo change..."
+	if [ ! -d "/opt/xen-orchestra" ]; then
+		cd /opt
+		/usr/bin/git clone -b master https://github.com/vatesfr/xen-orchestra
+		cp -pR /opt/xo-server/*  /opt/xen-orchestra/packages/xo-server
+		mv xo-server xo-server.old
+	fi
+}
