@@ -142,6 +142,7 @@ changeRepos()
 		mv xo-server xo-server.old
 		sed -i 's:/opt/xo-server/:/opt/xen-orchestra/packages/xo-server/:g' /lib/systemd/system/xo-server.service
 		systemctl daemon-reload
+		FORCE=true
 	fi
 }
 
