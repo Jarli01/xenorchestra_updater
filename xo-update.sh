@@ -80,7 +80,7 @@ main() {
 	fi
 
 	updateYarn
-	checkRepos
+	changeRepos
 	
 	UPDATE=""
 
@@ -140,5 +140,6 @@ changeRepos()
 		/usr/bin/git clone -b master https://github.com/vatesfr/xen-orchestra
 		cp -pR /opt/xo-server/*  /opt/xen-orchestra/packages/xo-server
 		mv xo-server xo-server.old
+		sed -i 's:/opt/xo-server/:/opt/xen-orchestra/packages/xo-server/:g' /lib/systemd/system/xo-server.service
 	fi
 }
