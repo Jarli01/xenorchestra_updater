@@ -131,8 +131,6 @@ updateYarn()
 	sudo apt-get install --yes yarn
 }
 
-main "$@"
-
 changeRepos()
 {	echo "Checking for Repo change..."
 	if [ ! -d "/opt/xen-orchestra" ]; then
@@ -143,3 +141,6 @@ changeRepos()
 		sed -i 's:/opt/xo-server/:/opt/xen-orchestra/packages/xo-server/:g' /lib/systemd/system/xo-server.service
 	fi
 }
+
+main "$@"
+
