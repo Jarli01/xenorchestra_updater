@@ -85,7 +85,6 @@ main() {
 	UPDATE=""
 
 	echo "Checking xo-server..."
-	mkdir /opt/xen-orchestra
 	cd /opt/xen-orchestra
 	updateFromSource
 
@@ -142,6 +141,7 @@ changeRepos()
 		cp -pR /opt/xo-server/*  /opt/xen-orchestra/packages/xo-server
 		mv xo-server xo-server.old
 		sed -i 's:/opt/xo-server/:/opt/xen-orchestra/packages/xo-server/:g' /lib/systemd/system/xo-server.service
+		systemctl daemon-reload
 	fi
 }
 
