@@ -138,7 +138,7 @@ changeRepos()
 	if [ ! -d "/opt/xen-orchestra" ]; then
 		cd /opt
 		/usr/bin/git clone -b master https://github.com/vatesfr/xen-orchestra
-		cp -pR /opt/xo-server/*  /opt/xen-orchestra/packages/xo-server
+		cp /opt/xo-server/.xo-server.yaml /opt/xen-orchestra/packages/xo-server/.xo-server.yaml
 		mv xo-server xo-server.old
 		sed -i 's:/opt/xo-server/:/opt/xen-orchestra/packages/xo-server/:g' /lib/systemd/system/xo-server.service
 		systemctl daemon-reload
