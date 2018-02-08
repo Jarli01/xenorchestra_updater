@@ -84,24 +84,16 @@ main() {
 	
 	UPDATE=""
 
-	echo "Checking xo-server..."
+	echo "Checking xen-orchestra..."
 	cd /opt/xen-orchestra
 	updateFromSource
 
 	if [ "$UPDATE" = true ]; then
 		echo "Adding existing plugins to Yarn lock file..."
 		find node_modules -maxdepth 1 -type d -name 'xo-server-*' -printf '%P\0' | xargs -0 yarn upgrade
+		sed -i 's/< 5/> 0/g' /opt/xen-orchestra/packages/xo-web/src/xo-app/settings/config/index.js
+		sed -i 's/< 5/> 0/g' /opt/xen-orchestra/packages/xo-web/src/xo-app/xosan/index.js
 
-		installUpdates
-	fi
-
-	echo "Checking xo-web..."
-	cd /opt/xo-web
-	updateFromSource
-
-	if [ "$UPDATE" = true ]; then
-		sed -i 's/< 5/> 0/g' /opt/xo-web/src/xo-app/settings/config/index.js
-		sed -i 's/< 5/> 0/g' /opt/xo-web/src/xo-app/xosan/index.js
 		installUpdates
 	fi
 
@@ -140,6 +132,7 @@ changeRepos()
 		/usr/bin/git clone -b master https://github.com/vatesfr/xen-orchestra
 		cp /opt/xo-server/.xo-server.yaml /opt/xen-orchestra/packages/xo-server/.xo-server.yaml
 		mv xo-server xo-server.old
+		mv xo-web xo-web.old
 		sed -i 's:/opt/xo-server/:/opt/xen-orchestra/packages/xo-server/:g' /lib/systemd/system/xo-server.service
 		systemctl daemon-reload
 		FORCE=true
