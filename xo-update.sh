@@ -80,11 +80,12 @@ main() {
 	fi
 
 	updateYarn
-
+	changeRepos
+	
 	UPDATE=""
 
 	echo "Checking xo-server..."
-	cd /opt/xo-server
+	cd /opt/xen-orchestra
 	updateFromSource
 
 	if [ "$UPDATE" = true ]; then
@@ -130,4 +131,20 @@ updateYarn()
 	sudo apt-get install --yes yarn
 }
 
+changeRepos()
+{	
+	echo "Checking for Repo change..."
+	
+	if [ ! -d "/opt/xen-orchestra" ]; then
+		cd /opt
+		/usr/bin/git clone -b master https://github.com/vatesfr/xen-orchestra
+		cp /opt/xo-server/.xo-server.yaml /opt/xen-orchestra/packages/xo-server/.xo-server.yaml
+		mv xo-server xo-server.old
+		sed -i 's:/opt/xo-server/:/opt/xen-orchestra/packages/xo-server/:g' /lib/systemd/system/xo-server.service
+		systemctl daemon-reload
+		FORCE=true
+	fi
+}
+
 main "$@"
+
