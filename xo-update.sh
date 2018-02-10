@@ -128,17 +128,22 @@ changeRepos()
 {	
 	echo "Checking for Repo change..."
 	
-	if [ ! -d "/opt/xen-orchestra" ]; then
+	if [ -d "/opt/xo-server" ]; then
 		cd /opt
 		/usr/bin/git clone -b master https://github.com/vatesfr/xen-orchestra
 		cp /opt/xo-server/.xo-server.yaml /opt/xen-orchestra/packages/xo-server/.xo-server.yaml
-		sed -i 's:/opt/xo-web/dist:/opt/xen-orchestra/packages/xo-web/dist:g' /opt/xen-orchestra/packages/xo-server/.xo-server.yaml
 		mv xo-server xo-server.old
-		mv xo-web xo-web.old
 		sed -i 's:/opt/xo-server/:/opt/xen-orchestra/packages/xo-server/:g' /lib/systemd/system/xo-server.service
 		systemctl daemon-reload
 		FORCE=true
 	fi
+	
+	if [ -d "/opt/xo-web" ]; then
+		mv xo-web xo-web.old
+		sed -i 's:/opt/xo-web/dist:/opt/xen-orchestra/packages/xo-web/dist:g' /opt/xen-orchestra/packages/xo-server/.xo-server.yaml
+		FORCE=true
+	fi
+	
 }
 
 main "$@"
