@@ -5,7 +5,8 @@ updateFromSource ()
 UPDATE=false
 
 echo Current branch $(git rev-parse --abbrev-ref HEAD)
-echo Current version $(git describe --abbrev=0)
+echo Current version $(node -pe "require('/opt/xen-orchestra/packages/xo-server/package.json').version") / $(node -pe "require('/opt/xen-orchestra/packages/xo-web/package.json').version")
+
 sleep 5s
 
 if [ "$BRANCH" != "" ]; then
@@ -34,7 +35,7 @@ installUpdates()
   echo "Installing..."
   yarn
   yarn build
-  echo Updated version $(git describe --abbrev=0)
+  echo Updated version $(node -pe "require('/opt/xen-orchestra/packages/xo-server/package.json').version") / $(node -pe "require('/opt/xen-orchestra/packages/xo-web/package.json').version")
 }
 
 main() {
@@ -131,6 +132,7 @@ changeRepos()
 		cd /opt
 		/usr/bin/git clone -b master https://github.com/vatesfr/xen-orchestra
 		cp /opt/xo-server/.xo-server.yaml /opt/xen-orchestra/packages/xo-server/.xo-server.yaml
+		sed -i 's:/opt/xo-web/dist:/opt/xen-orchestra/packages/xo-web/dist:g' /opt/xen-orchestra/packages/xo-server/.xo-server.yaml
 		mv xo-server xo-server.old
 		mv xo-web xo-web.old
 		sed -i 's:/opt/xo-server/:/opt/xen-orchestra/packages/xo-server/:g' /lib/systemd/system/xo-server.service
