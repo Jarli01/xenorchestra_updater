@@ -5,7 +5,8 @@ updateFromSource ()
 UPDATE=false
 
 echo Current branch $(git rev-parse --abbrev-ref HEAD)
-echo Current version $(node -pe "require('/opt/xen-orchestra/packages/xo-server/package.json').version") / $(node -pe "require('/opt/xen-orchestra/packages/xo-web/package.json').version")
+GetVersions
+echo Current version $XOS_VER / $XOW_VER
 
 sleep 5s
 
@@ -35,7 +36,8 @@ installUpdates()
   echo "Installing..."
   yarn
   yarn build
-  echo Updated version $(node -pe "require('/opt/xen-orchestra/packages/xo-server/package.json').version") / $(node -pe "require('/opt/xen-orchestra/packages/xo-web/package.json').version")
+	GetVersions
+	echo Updated version $XOS_VER / $XOW_VER
 }
 
 main() {
@@ -82,7 +84,7 @@ main() {
 
 	updateYarn
 	changeRepos
-	
+
 	UPDATE=""
 
 	echo "Checking xen-orchestra..."
@@ -125,9 +127,9 @@ updateYarn()
 }
 
 changeRepos()
-{	
+{
 	echo "Checking for Repo change..."
-	
+
 	if [ -d "/opt/xo-server" ]; then
 		cd /opt
 		/usr/bin/git clone -b master https://github.com/vatesfr/xen-orchestra
@@ -137,14 +139,24 @@ changeRepos()
 		systemctl daemon-reload
 		FORCE=true
 	fi
-	
+
 	if [ -d "/opt/xo-web" ]; then
 		mv xo-web xo-web.old
 		sed -i 's:/opt/xo-web/dist:/opt/xen-orchestra/packages/xo-web/dist:g' /opt/xen-orchestra/packages/xo-server/.xo-server.yaml
 		FORCE=true
 	fi
-	
+
+}
+
+GetVersions()
+{
+	if [ -f "/opt/xen-orchestra/packages/xo-server/package.json" ]; then
+		XOS_VER=$(node -pe "require('/opt/xen-orchestra/packages/xo-server/package.json').version")
+	fi
+
+	if [ -f "/opt/xen-orchestra/packages/xo-web/package.json" ]; then
+		XOW_VER=$(node -pe "require('/opt/xen-orchestra/packages/xo-web/package.json').version")
+	fi
 }
 
 main "$@"
-
