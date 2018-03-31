@@ -92,8 +92,6 @@ main() {
 	updateFromSource
 
 	if [ "$UPDATE" = true ]; then
-		echo "Adding existing plugins to Yarn lock file..."
-		find node_modules -maxdepth 1 -type d -name 'xo-server-*' -printf '%P\0' | xargs -0 yarn upgrade
 		sed -i 's/< 5/> 0/g' /opt/xen-orchestra/packages/xo-web/src/xo-app/settings/config/index.js
 		sed -i 's/< 5/> 0/g' /opt/xen-orchestra/packages/xo-web/src/xo-app/xosan/index.js
 
