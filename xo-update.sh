@@ -44,7 +44,7 @@ installPlugins()
 {
   # symlink any missing plugins
   dest=/usr/local/lib/node_modules/
-  for source in $(ls -d /opt/xen-orchestra/packages/xo-server-*); do
+  for source in =$(ls -d /opt/xen-orchestra/packages/xo-server-*); do
     if [ ! -L $dest$(basename $source) ];  then 
       ln -s "$source" "$dest"
     fi
