@@ -36,9 +36,20 @@ installUpdates()
   echo "Installing..."
   yarn
   yarn build
-	GetVersions
-	echo Updated version $XOS_VER / $XOW_VER
+  GetVersions
+  echo Updated version $XOS_VER / $XOW_VER
 }
+
+installPlugins()
+{
+  # symlink any missing plugins
+  dest=/usr/local/lib/node_modules/
+  for source in $(ls -d /opt/xen-orchestra/packages/xo-server-*); do
+    if [ ! -L $dest$(basename $source) ];  then 
+      ln -s "$source" "dest"
+    fi
+done}
+
 
 main() {
 	if [ "$EUID" -ne 0 ]; then
@@ -96,6 +107,7 @@ main() {
 		sed -i 's/< 5/> 0/g' /opt/xen-orchestra/packages/xo-web/src/xo-app/xosan/index.js
 
 		installUpdates
+		installPlugins
 	fi
 
 	sleep 5s
