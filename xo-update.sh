@@ -42,10 +42,14 @@ installUpdates()
 
 installPlugins()
 {
+  echo "Checking plugins..."
+
   # symlink any missing plugins
   dest=/usr/local/lib/node_modules/
   for source in =$(ls -d /opt/xen-orchestra/packages/xo-server-*); do
-    if [ ! -L $dest$(basename $source) ];  then 
+    plugin=$(basename $source)
+    if [ ! -L $dest$plugin ];  then
+      echo "Creating link for $plugin"
       ln -s "$source" "$dest"
     fi
 done
