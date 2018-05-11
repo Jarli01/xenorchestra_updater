@@ -48,7 +48,8 @@ installPlugins()
     if [ ! -L $dest$(basename $source) ];  then 
       ln -s "$source" "dest"
     fi
-done}
+done
+}
 
 
 main() {
