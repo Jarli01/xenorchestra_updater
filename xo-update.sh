@@ -10,6 +10,17 @@ echo Current version $XOS_VER / $XOW_VER
 
 sleep 5s
 
+#Check Git user/email for installer
+gituser=$(git config --global user.name)
+gitemail=$(git config --global user.email)
+if [ -z "$gituser" ] || [ -z "$gitemail" ]; then
+	echo "Git credentials required to run XOCE updater";
+	echo "enter your credentials with the following commands and then rerun this update script"
+	echo "git config --global user.email "you@example.com""
+	echo "git config --global user.name "Your Name""
+	exit 1;
+fi
+
 if [ "$BRANCH" != "" ]; then
 	echo "Switching to branch '$BRANCH'..."
 	sudo git diff-index --quiet HEAD -- || git stash -u && git stash drop
