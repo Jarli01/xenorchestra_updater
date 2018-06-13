@@ -1,12 +1,19 @@
 #!/bin/bash
 
-#Check Git user/email for installer
-gituser=$(git config --global user.name)
+#Check Git email
 gitemail=$(git config --global user.email)
-if [ -z "$gituser" ] || [ -z "$gitemail" ]; then
-	echo "Git credentials required to run XOCE updater";
+if [ -z "$gitemail" ]; then
+	echo "Git email required to run XOCE updater";
 	echo "enter your credentials with the following commands and then rerun this update script"
 	echo "git config --global user.email "you@example.com""
+	exit 1;
+fi
+
+#Check Git name
+gituser=$(git config --global user.name)
+if [ -z "$gituser" ]; then
+	echo "Git name required to run XOCE updater";
+	echo "enter your credentials with the following commands and then rerun this update script"
 	echo "git config --global user.name "Your Name""
 	exit 1;
 fi
