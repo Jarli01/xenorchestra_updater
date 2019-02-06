@@ -117,6 +117,7 @@ main() {
 	fi
 
 	updateYarn
+	updateDependencies
 	changeRepos
 
 	UPDATE=""
@@ -190,6 +191,20 @@ GetVersions()
 	if [ -f "/opt/xen-orchestra/packages/xo-web/package.json" ]; then
 		XOW_VER=$(node -pe "require('/opt/xen-orchestra/packages/xo-web/package.json').version")
 	fi
+}
+
+updateDependencies()
+{
+	echo "Checking for missing dependencies..."
+	declare -a depends=("lvm2" "cifs-utils")
+
+	for i in "${depends[@]}"
+	do
+		if [ $(dpkg-query -W -f='${Status}' $i 2>/dev/null | grep -c "ok installed") -eq 0 ]; then
+			echo "Installing $i..."
+			sudo apt-get install --yes $i
+		fi
+	done
 }
 
 main "$@"
