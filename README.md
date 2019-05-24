@@ -2,6 +2,9 @@
 
 A simple tool to pull Xen Orchestra updates and apply the settings to your XO installation.
 
+# Problems?
+
+Check out our [Troubleshooting Page](https://github.com/Jarli01/xenorchestra_updater/blob/master/TROUBLESHOOTING.md)!
 
 ## Options
 
