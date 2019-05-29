@@ -46,9 +46,9 @@ This will check and continually update the last 50 log files for your XOCE insta
 
 ## Required Dependencies 
 
-Your system must be able to install the following list of dependencies, usually this is automatic but some distributions might not have the required repositories. Plese confirm you can install these before creating a ticket. 
+Your system must be able to install the following list of dependencies, usually this is automatic but some distributions might not have the required repositories. Please confirm you can install these before creating a ticket. 
 
-Check your distribution respositories list ie: ```/etc/apt/sources.list``` for multiverse. 
+Check your distribution repositories list ie: ```/etc/apt/sources.list``` for multiverse. 
 
 * build-essential 
 * redis-server 
@@ -64,8 +64,8 @@ These dependencies (on Ubuntu) are available from the ```multiverse``` and ```un
 
 ## System Performance or General Errors Guidance
 
-While XOCE can and does operate without issue for many people there are benefits to using using more than the absolute minimum system specifications for the guest OS. 
+While XOCE can and does operate without issue for many people there are benefits to using more than the absolute minimum system specifications for the guest OS. 
 
 There is a mandate for 1 GB of ram built into the updater script. While this is a requirement of XO it isn't a requirement of the OS. 
 
-An additional check is being considered to match the XOA system which is supplied with 2 CPU (or 1 CPU with 2 cores). While this currently isn't implemented; if you encounter issues please try adding an additional CPU to your installation and see if the issue persists. 
+An additional check is being considered to match the XOA system which is supplied with 2 CPU (or 1 CPU with 2 cores). While this currently isn't implemented; if you encounter issues please try adding an additional CPU to your installation and see if the issue persists.
