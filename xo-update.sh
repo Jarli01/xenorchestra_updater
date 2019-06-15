@@ -1,5 +1,7 @@
 #!/bin/bash
 
+[ $EUID = 0 ] || { echo "This script needs to be run as root!"; exit 1; }
+
 #Check Git email
 gitemail=$(git config --global user.email)
 if [ -z "$gitemail" ]; then
@@ -30,22 +32,22 @@ sleep 5s
 
 if [ "$BRANCH" != "" ]; then
 	echo "Switching to branch '$BRANCH'..."
-	sudo git diff-index --quiet HEAD -- || git stash -u && git stash drop
-	sudo git checkout $BRANCH
+	git diff-index --quiet HEAD -- || git stash -u && git stash drop
+	git checkout $BRANCH
 fi
 
-sudo git fetch origin -q
+git fetch origin -q
 REMOTE=$(git rev-parse @{u})
-REVISIONS=$( sudo git rev-list HEAD...$REMOTE --count )
+REVISIONS=$( git rev-list HEAD...$REMOTE --count )
 echo $REVISIONS updates available
 
 if [ $REVISIONS -ne 0 ] || [ "$FORCE" = true ]; then
   UPDATE=true
   echo "Updating from source..."
-  sudo git diff-index --quiet HEAD -- || git stash -u && git stash drop
-  sudo git pull
+  git diff-index --quiet HEAD -- || git stash -u && git stash drop
+  git pull
   echo "Clearing directories..."
-  sudo rm -rf dist
+  rm -rf dist
 fi
 }
 
