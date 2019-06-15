@@ -1,7 +1,5 @@
 #!/bin/bash
 
-[ $EUID = 0 ] || { echo "This script needs to be run as root!"; exit 1; }
-
 #Check Git email
 gitemail=$(git config --global user.email)
 if [ -z "$gitemail" ]; then
@@ -78,7 +76,7 @@ done
 
 main() {
 	if [ "$EUID" -ne 0 ]; then
-		echo "Please run as root (sudo bash)"
+		echo "Please run as root (sudo bash | su)"
 		exit
 	fi
 
@@ -205,7 +203,7 @@ updateDependencies()
 	do
 		if [ $(dpkg-query -W -f='${Status}' $i 2>/dev/null | grep -c "ok installed") -eq 0 ]; then
 			echo "Installing $i..."
-			sudo apt-get install --yes $i
+			apt-get install --yes $i
 		fi
 	done
 }
