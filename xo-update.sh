@@ -108,14 +108,14 @@ main() {
 	echo "Stopping xo-server..."
 	ISACTIVE=$(systemctl is-active xo-server)
 	if [ "$ISACTIVE" == "active" ]; then
-	  sudo systemctl stop xo-server
+	  systemctl stop xo-server
 	else
-	  sudo pkill -f "/bin/xo-server"
+	  pkill -f "/bin/xo-server"
 	fi
 
 	if [ "$NODE" = true ]; then
 		echo "Updating Node.js to '$VERSION' version..."
-		sudo n "$VERSION"
+		n "$VERSION"
 	fi
 
 	updateYarn
@@ -141,7 +141,7 @@ main() {
 
 	if [ "$ISACTIVE" == "active" ]; then
 	  echo "Restarting xo-server..."
-	  sudo systemctl start xo-server
+	  systemctl start xo-server
 	else
 	  echo "Please manually restart xo-server"
 	fi
@@ -153,14 +153,14 @@ updateYarn()
 
 	if [ $(dpkg-query -W -f='${Status}' yarn 2>/dev/null | grep -c "ok installed") -eq 0 ]; then
 		echo "Installing Yarn..."
-		echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
+		echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
 	else
 		echo "Checking for Yarn update..."
 	fi
 
-	curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
-	sudo apt-get update > /dev/null
-	sudo apt-get install --yes yarn
+	curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
+	apt-get update > /dev/null
+	apt-get install --yes yarn
 }
 
 changeRepos()
