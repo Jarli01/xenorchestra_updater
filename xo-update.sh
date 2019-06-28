@@ -30,22 +30,22 @@ sleep 5s
 
 if [ "$BRANCH" != "" ]; then
 	echo "Switching to branch '$BRANCH'..."
-	sudo git diff-index --quiet HEAD -- || git stash -u && git stash drop
-	sudo git checkout $BRANCH
+	git diff-index --quiet HEAD -- || git stash -u && git stash drop
+	git checkout $BRANCH
 fi
 
-sudo git fetch origin -q
+git fetch origin -q
 REMOTE=$(git rev-parse @{u})
-REVISIONS=$( sudo git rev-list HEAD...$REMOTE --count )
+REVISIONS=$( git rev-list HEAD...$REMOTE --count )
 echo $REVISIONS updates available
 
 if [ $REVISIONS -ne 0 ] || [ "$FORCE" = true ]; then
   UPDATE=true
   echo "Updating from source..."
-  sudo git diff-index --quiet HEAD -- || git stash -u && git stash drop
-  sudo git pull
+  git diff-index --quiet HEAD -- || git stash -u && git stash drop
+  git pull
   echo "Clearing directories..."
-  sudo rm -rf dist
+  rm -rf dist
 fi
 }
 
@@ -76,7 +76,7 @@ done
 
 main() {
 	if [ "$EUID" -ne 0 ]; then
-		echo "Please run as root (sudo bash)"
+		echo "Please run as root (sudo bash | su)"
 		exit
 	fi
 
@@ -106,14 +106,14 @@ main() {
 	echo "Stopping xo-server..."
 	ISACTIVE=$(systemctl is-active xo-server)
 	if [ "$ISACTIVE" == "active" ]; then
-	  sudo systemctl stop xo-server
+	  systemctl stop xo-server
 	else
-	  sudo pkill -f "/bin/xo-server"
+	  pkill -f "/bin/xo-server"
 	fi
 
 	if [ "$NODE" = true ]; then
 		echo "Updating Node.js to '$VERSION' version..."
-		sudo n "$VERSION"
+		n "$VERSION"
 	fi
 
 	updateYarn
@@ -141,7 +141,7 @@ main() {
 
 	if [ "$ISACTIVE" == "active" ]; then
 	  echo "Restarting xo-server..."
-	  sudo systemctl start xo-server
+	  systemctl start xo-server
 	else
 	  echo "Please manually restart xo-server"
 	fi
@@ -153,14 +153,14 @@ updateYarn()
 
 	if [ $(dpkg-query -W -f='${Status}' yarn 2>/dev/null | grep -c "ok installed") -eq 0 ]; then
 		echo "Installing Yarn..."
-		echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
+		echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
 	else
 		echo "Checking for Yarn update..."
 	fi
 
-	curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
-	sudo apt-get update > /dev/null
-	sudo apt-get install --yes yarn
+	curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
+	apt-get update > /dev/null
+	apt-get install --yes yarn
 }
 
 changeRepos()
@@ -205,7 +205,7 @@ updateDependencies()
 	do
 		if [ $(dpkg-query -W -f='${Status}' $i 2>/dev/null | grep -c "ok installed") -eq 0 ]; then
 			echo "Installing $i..."
-			sudo apt-get install --yes $i
+			apt-get install --yes $i
 		fi
 	done
 }
