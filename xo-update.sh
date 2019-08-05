@@ -129,10 +129,7 @@ main() {
 	if [ "$UPDATE" = true ]; then
 		sed -i 's/< 5/> 0/g' /opt/xen-orchestra/packages/xo-web/src/xo-app/settings/config/index.js
 		sed -i 's/< 5/> 0/g' /opt/xen-orchestra/packages/xo-web/src/xo-app/xosan/index.js
-      		sed -i 's/process.env.XOA_PLAN === 5/process.env.XOA_PLAN === 6/g' /opt/xen-orchestra/packages/xo-web/src/xo-app/index.js
-		
 
-		
 		installUpdates
 		installPlugins
 	fi
