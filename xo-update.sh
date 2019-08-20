@@ -127,7 +127,6 @@ main() {
 	updateFromSource
 
 	if [ "$UPDATE" = true ]; then
-		sed -i 's/< 5/> 0/g' /opt/xen-orchestra/packages/xo-web/src/xo-app/settings/config/index.js
 		sed -i 's/< 5/> 0/g' /opt/xen-orchestra/packages/xo-web/src/xo-app/xosan/index.js
 
 		installUpdates
