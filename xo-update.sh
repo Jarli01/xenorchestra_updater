@@ -76,10 +76,12 @@ installPlugins()
 cleanupPlugins()
 {
   echo "Cleanup plugins..."
-  plugins=("/usr/local/lib/node_modules/xo-server-test" "/usr/local/lib/node_modules/xo-server-cloud")
+  dest=/usr/local/lib/node_modules/
+  plugins=("xo-server-test" "xo-server-cloud")
   for plugin in "${plugins[@]}"; do
-    if [ -f "$plugin" ]; then
-      rm $plugin
+    if [ -L $dest$plugin ]; then
+      echo "Removing link for $plugin"
+      rm $dest$plugin
     fi
   done
 }
