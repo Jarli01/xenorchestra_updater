@@ -70,9 +70,26 @@ installPlugins()
       echo "Creating link for $plugin"
       ln -s "$source" "$dest"
     fi
-done
+  done
 }
 
+cleanupPlugins()
+{
+  echo "Cleanup plugins..."
+  dest=/usr/local/lib/node_modules
+  
+  # Remove links to non-existent plugins
+  find $dest/xo-server-* -xtype l -delete
+
+  # Remove other "bad" links
+    plugins=("xo-server-test")
+  for plugin in "${plugins[@]}"; do
+    if [ -L $dest/$plugin ]; then
+      echo "Removing link for $plugin"
+      rm $dest$plugin
+    fi
+  done
+}
 
 main() {
 	if [ "$EUID" -ne 0 ]; then
@@ -131,6 +148,7 @@ main() {
 
 		installUpdates
 		installPlugins
+		cleanupPlugins
 	fi
 
 	sleep 5s
