@@ -70,9 +70,19 @@ installPlugins()
       echo "Creating link for $plugin"
       ln -s "$source" "$dest"
     fi
-done
+  done
 }
 
+cleanupPlugins()
+{
+  echo "Cleanup plugins..."
+  plugins=("/usr/local/lib/node_modules/xo-server-test" "/usr/local/lib/node_modules/xo-server-cloud")
+  for plugin in "${plugins[@]}"; do
+    if [ -f "$plugin" ]; then
+      rm $plugin
+    fi
+  done
+}
 
 main() {
 	if [ "$EUID" -ne 0 ]; then
@@ -131,6 +141,7 @@ main() {
 
 		installUpdates
 		installPlugins
+		cleanupPlugins
 	fi
 
 	sleep 5s
