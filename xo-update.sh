@@ -86,7 +86,7 @@ cleanupPlugins()
   for plugin in "${plugins[@]}"; do
     if [ -L $dest/$plugin ]; then
       echo "Removing link for $plugin"
-      rm $dest$plugin
+      rm $dest/$plugin
     fi
   done
 }
