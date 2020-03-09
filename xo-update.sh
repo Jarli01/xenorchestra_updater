@@ -69,8 +69,8 @@ installPlugins()
   dest=/usr/local/lib/node_modules/
   for source in $(ls -d /opt/xen-orchestra/packages/xo-server-*); do
     plugin=$(basename $source)
-    
-    if [ -v ignoreplugins[$plugin]]; then
+
+    if [[ "${ignoreplugins[@]}" =~ $plugin ]]; then
       echo "Ignoring $plugin plugin"
     elif [ ! -L $dest$plugin ];  then
       echo "Creating link for $plugin"
