@@ -70,7 +70,7 @@ installPlugins()
   for source in $(ls -d /opt/xen-orchestra/packages/xo-server-*); do
     plugin=$(basename $source)
     
-    if [ -v ignoreplugins[$plugin]; then
+    if [ -v ignoreplugins[$plugin]]; then
       echo "Ignoring $plugin plugin"
     elif [ ! -L $dest$plugin ];  then
       echo "Creating link for $plugin"
