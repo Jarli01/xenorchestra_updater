@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Plugins to ignore
+ignoreplugins=("xo-server-test")
+
 #Check Git email
 gitemail=$(git config --global user.email)
 if [ -z "$gitemail" ]; then
@@ -66,7 +69,10 @@ installPlugins()
   dest=/usr/local/lib/node_modules/
   for source in $(ls -d /opt/xen-orchestra/packages/xo-server-*); do
     plugin=$(basename $source)
-    if [ ! -L $dest$plugin ];  then
+
+    if [[ "${ignoreplugins[@]}" =~ $plugin ]]; then
+      echo "Ignoring $plugin plugin"
+    elif [ ! -L $dest$plugin ];  then
       echo "Creating link for $plugin"
       ln -s "$source" "$dest"
     fi
@@ -82,8 +88,7 @@ cleanupPlugins()
   find $dest/xo-server-* -xtype l -delete
 
   # Remove other "bad" links
-    plugins=("xo-server-test")
-  for plugin in "${plugins[@]}"; do
+  for plugin in "${ignoreplugins[@]}"; do
     if [ -L $dest/$plugin ]; then
       echo "Removing link for $plugin"
       rm $dest/$plugin
