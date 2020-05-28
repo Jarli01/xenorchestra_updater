@@ -109,7 +109,7 @@ main() {
 				FORCE=true
 
 				if [ "$BRANCH" == "" ]; then
-					BRANCH="stable"
+					BRANCH="master"
 				fi;;
 
 			f)	FORCE=true;;
