@@ -21,6 +21,19 @@ if [ -z "$gituser" ]; then
 	exit 1;
 fi
 
+# Check for minimum node version
+nodevermajor=$(node -v  | cut -d"v" -f2 | cut -d"." -f1)
+
+if [ "$nodevermajor" -lt '12' ] ; then
+	echo "Incorrect version of Node detected";
+	echo "Update node with the following command and then rerun this script"
+	echo "n lts"
+	exit 1;
+fi
+
+totalk=$(awk '/^MemTotal:/{print $2}' /proc/meminfo)
+if [ "$totalk" -lt "3000000" ]; then echo "XOCE Requires at least 3GB Memory!"; exit 1; fi 
+
 updateFromSource ()
 {
 UPDATE=false
@@ -109,7 +122,7 @@ main() {
 				FORCE=true
 
 				if [ "$BRANCH" == "" ]; then
-					BRANCH="stable"
+					BRANCH="master"
 				fi;;
 
 			f)	FORCE=true;;
