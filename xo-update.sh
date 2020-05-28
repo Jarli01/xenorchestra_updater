@@ -22,7 +22,7 @@ if [ -z "$gituser" ]; then
 fi
 
 # Check for minimum node version
-$nodevermajor=$(node -v  | cut -d"v" -f2 | cut -d"." -f1)
+nodevermajor=$(node -v  | cut -d"v" -f2 | cut -d"." -f1)
 if [ $nodevermajor -lt "12" ] ; then
 	echo "Incorrect version of Node detected";
 	echo "Update node with the  following command and then rerun this script"
