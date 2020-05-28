@@ -31,6 +31,9 @@ if [ "$nodevermajor" -lt '12' ] ; then
 	exit 1;
 fi
 
+totalk=$(awk '/^MemTotal:/{print $2}' /proc/meminfo)
+if [ "$totalk" -lt "3000000" ]; then echo "XOCE Requires at least 3GB Memory!"; exit 1; fi 
+
 updateFromSource ()
 {
 UPDATE=false
