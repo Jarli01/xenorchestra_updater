@@ -26,7 +26,7 @@ nodevermajor=$(node -v  | cut -d"v" -f2 | cut -d"." -f1)
 
 if [ "$nodevermajor" -lt '12' ] ; then
 	echo "Incorrect version of Node detected";
-	echo "Update node with the  following command and then rerun this script"
+	echo "Update node with the following command and then rerun this script"
 	echo "n lts"
 	exit 1;
 fi
