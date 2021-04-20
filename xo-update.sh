@@ -41,7 +41,7 @@ UPDATE=false
 echo Current branch $(git rev-parse --abbrev-ref HEAD)
 GetVersions
 echo Current version $XOS_VER / $XOW_VER
-
+echo Current $XO_COMMIT
 sleep 5s
 
 if [ "$BRANCH" != "" ]; then
@@ -72,6 +72,7 @@ installUpdates()
   yarn build
   GetVersions
   echo Updated version $XOS_VER / $XOW_VER
+  echo Updated $XO_COMMIT
 }
 
 installPlugins()
@@ -226,6 +227,8 @@ GetVersions()
 	if [ -f "/opt/xen-orchestra/packages/xo-web/package.json" ]; then
 		XOW_VER=$(node -pe "require('/opt/xen-orchestra/packages/xo-web/package.json').version")
 	fi
+	
+	XO_COMMIT=$(git rev-list --format=format:'%ai' --max-count=1 `git rev-parse HEAD`)
 }
 
 updateDependencies()
