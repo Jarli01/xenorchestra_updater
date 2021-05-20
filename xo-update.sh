@@ -170,6 +170,7 @@ main() {
 		cleanupPlugins
 	fi
 
+	fixupService
 	sleep 5s
 
 	if [ "$ISACTIVE" == "active" ]; then
@@ -245,4 +246,11 @@ updateDependencies()
 	done
 }
 
+fixupService()
+{
+	sed -i 's:./bin/xo-server:./dist/cli.mjs:g' /lib/systemd/system/xo-server.service
+	systemctl daemon-reload
+}
+
 main "$@"
+
