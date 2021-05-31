@@ -27,7 +27,7 @@ nodeVersion=$(node -v  | cut -d"v" -f2)
 # Get LTS node version
 nodeLTS=$(n --lts)
 
-if [ "$nodeVersion" -ne '$nodeLTS' ] ; then
+if [ "$nodeVersion" != "$nodeLTS" ] ; then
 	echo "Incorrect version of Node detected";
 	echo "Update node with the following command and then rerun this script"
 	echo "n lts"
