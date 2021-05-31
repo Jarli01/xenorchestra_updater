@@ -21,10 +21,13 @@ if [ -z "$gituser" ]; then
 	exit 1;
 fi
 
-# Check for minimum node version
-nodevermajor=$(node -v  | cut -d"v" -f2 | cut -d"." -f1)
+# Get current node version
+nodeVersion=$(node -v  | cut -d"v" -f2)
 
-if [ "$nodevermajor" -lt '14' ] ; then
+# Get LTS node version
+nodeLTS=$(n --lts)
+
+if [ "$nodeVersion" -ne '$nodeLTS' ] ; then
 	echo "Incorrect version of Node detected";
 	echo "Update node with the following command and then rerun this script"
 	echo "n lts"
