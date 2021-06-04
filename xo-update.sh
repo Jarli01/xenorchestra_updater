@@ -3,40 +3,6 @@
 # Plugins to ignore
 ignoreplugins=("xo-server-test")
 
-#Check Git email
-gitemail=$(git config --global user.email)
-if [ -z "$gitemail" ]; then
-	echo "Git email required to run XOCE updater";
-	echo "enter your credentials with the following commands and then rerun this update script"
-	echo "git config --global user.email \"you@example.com\""
-	exit 1;
-fi
-
-#Check Git name
-gituser=$(git config --global user.name)
-if [ -z "$gituser" ]; then
-	echo "Git name required to run XOCE updater";
-	echo "enter your credentials with the following commands and then rerun this update script"
-	echo "git config --global user.name \"Your Name\""
-	exit 1;
-fi
-
-# Get current node version
-nodeVersion=$(node -v  | cut -d"v" -f2)
-
-# Get LTS node version
-nodeLTS=$(n --lts)
-
-if [ "$nodeVersion" != "$nodeLTS" ] ; then
-	echo "Incorrect version of Node detected";
-	echo "Update node with the following command and then rerun this script"
-	echo "n lts"
-	exit 1;
-fi
-
-totalk=$(awk '/^MemTotal:/{print $2}' /proc/meminfo)
-if [ "$totalk" -lt "3000000" ]; then echo "XOCE Requires at least 3GB Memory!"; exit 1; fi 
-
 updateFromSource ()
 {
 UPDATE=false
@@ -119,6 +85,27 @@ main() {
 		exit
 	fi
 
+	#Check Git email
+	gitemail=$(git config --global user.email)
+	if [ -z "$gitemail" ]; then
+		echo "Git email required to run XOCE updater";
+		echo "enter your credentials with the following commands and then rerun this update script"
+		echo "git config --global user.email \"you@example.com\""
+		exit 1;
+	fi
+
+	#Check Git name
+	gituser=$(git config --global user.name)
+	if [ -z "$gituser" ]; then
+		echo "Git name required to run XOCE updater";
+		echo "enter your credentials with the following commands and then rerun this update script"
+		echo "git config --global user.name \"Your Name\""
+		exit 1;
+	fi
+
+	totalk=$(awk '/^MemTotal:/{print $2}' /proc/meminfo)
+	if [ "$totalk" -lt "3000000" ]; then echo "XOCE Requires at least 3GB Memory!"; exit 1; fi 
+
 	while getopts b:fn: opt; do
 		case $opt in
 			b)
@@ -141,6 +128,19 @@ main() {
 				fi;;
 		esac
 	done
+
+	# Get current node version
+	nodeVersion=$(node -v  | cut -d"v" -f2)
+
+	# Get LTS node version
+	nodeLTS=$(n --lts)
+
+	if [ "$nodeVersion" != "$nodeLTS" ] && [ "$NODE" != true ]; then
+		echo "Incorrect version of Node detected";
+		echo "Update node with the following command and then rerun this script"
+		echo "sudo n lts"
+		exit 1;
+	fi
 
 	echo "Stopping xo-server..."
 	ISACTIVE=$(systemctl is-active xo-server)
