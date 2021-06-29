@@ -28,8 +28,8 @@ if [ $REVISIONS -ne 0 ] || [ "$FORCE" = true ]; then
   UPDATE=true
   echo "Updating from source..."
   git diff-index --quiet HEAD -- || git stash -u && git stash drop
-  git clean -d -f -q
   git pull
+  git clean -d -f -q
   echo "Clearing directories..."
   rm -rf dist
 fi
