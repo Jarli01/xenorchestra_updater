@@ -189,12 +189,14 @@ updateYarn()
 
 	if [ $(dpkg-query -W -f='${Status}' yarn 2>/dev/null | grep -c "ok installed") -eq 0 ]; then
 		echo "Installing Yarn..."
-		echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
+		yarn_repo="deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/yarnkey.gpg] https://dl.yarnpkg.com/debian stable main"
+		yarn_gpg="https://dl.yarnpkg.com/debian/pubkey.gpg"
+		/usr/bin/curl -sSL $yarn_gpg | gpg --dearmor | sudo tee /usr/share/keyrings/yarnkey.gpg >/dev/null
+		echo "$yarn_repo" | tee /etc/apt/sources.list.d/yarn.list
 	else
 		echo "Checking for Yarn update..."
 	fi
 
-	curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
 	apt-get update > /dev/null
 	apt-get install --yes yarn
 }
