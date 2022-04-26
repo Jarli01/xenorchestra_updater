@@ -105,7 +105,7 @@ main() {
 	fi
 
 	totalk=$(awk '/^MemTotal:/{print $2}' /proc/meminfo)
-	if [ "$totalk" -lt "3000000" ]; then echo "XOCE Requires at least 3GB Memory!"; exit 1; fi 
+	if [ "$totalk" -lt "2000000" ]; then echo "XOCE Requires at least 2GB Memory!"; exit 1; fi 
 
 	while getopts b:fn: opt; do
 		case $opt in
