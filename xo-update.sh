@@ -156,6 +156,7 @@ main() {
 		n "$VERSION"
 	fi
 
+	fixupAPTKeys
 	updateYarn
 	updateDependencies
 	changeRepos
@@ -254,6 +255,15 @@ fixupService()
 {
 	sed -i 's:./bin/xo-server:./dist/cli.mjs:g' /lib/systemd/system/xo-server.service
 	systemctl daemon-reload
+}
+
+fixupAPTKeys()
+{
+	if [ $(apt-key list 86E50310 | grep -c "86E5 0310") -eq 1 ]; then
+		apt-key export 86e50310 | sudo gpg --dearmour -o /usr/share/keyrings/yarnkey.gpg
+		apt-key del 86E50310
+		sed -i "s|https://dl.yarnpkg.com/debian/|[arch=$\(dpkg --print-architecture\) signed-by=/usr/share/keyrings/yarnkey.gpg] &|" /etc/apt/sources.list.d/yarn.list
+	fi
 }
 
 main "$@"
