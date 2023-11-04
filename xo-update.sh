@@ -131,18 +131,21 @@ main() {
 	done
 
 	# Get current node version
-	nodeVersion=$(node -v  | cut -d"v" -f2)
+	# nodeVersion=$(node -v  | cut -d"v" -f2)
 
 	# Get LTS node version
-	nodeLTS=$(n --lts)
+	# nodeLTS=$(n --lts)
 
-	if [ "$nodeVersion" != "$nodeLTS" ] && [ "$NODE" != true ]; then
-		echo "Incorrect version of Node detected";
-		echo "Update node with the following command and then rerun this script"
-		echo "sudo n lts"
-		exit 1;
-	fi
+	# if [ "$nodeVersion" != "$nodeLTS" ] && [ "$NODE" != true ]; then
+	# 	echo "Incorrect version of Node detected";
+	# 	echo "Update node with the following command and then rerun this script"
+	# 	echo "sudo n lts"
+	# 	exit 1;
+	# fi
 
+	# Install latest version of Node 18
+	n 18
+	
 	echo "Stopping xo-server..."
 	ISACTIVE=$(systemctl is-active xo-server)
 	if [ "$ISACTIVE" == "active" ]; then
