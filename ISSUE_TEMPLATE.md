@@ -21,7 +21,6 @@
 #### What version of Node are you running?
 
 ```node -v```<br> 
-Node 14.17 or higher is required
  
 #### Provide answers to these questions:
 
