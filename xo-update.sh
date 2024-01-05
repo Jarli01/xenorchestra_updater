@@ -82,7 +82,7 @@ cleanupPlugins()
 
 main() {
 	if [ "$EUID" -ne 0 ]; then
-		echo "Please run as root (sudo bash | su)"
+		echo "Please run as root (sudo bash | su -)"
 		exit
 	fi
 
@@ -195,7 +195,7 @@ updateYarn()
 		echo "Installing Yarn..."
 		yarn_repo="deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/yarnkey.gpg] https://dl.yarnpkg.com/debian stable main"
 		yarn_gpg="https://dl.yarnpkg.com/debian/pubkey.gpg"
-		/usr/bin/curl -sSL $yarn_gpg | gpg --dearmor | sudo tee /usr/share/keyrings/yarnkey.gpg >/dev/null
+		/usr/bin/curl -sSL $yarn_gpg | gpg --dearmor | tee /usr/share/keyrings/yarnkey.gpg >/dev/null
 		echo "$yarn_repo" | tee /etc/apt/sources.list.d/yarn.list
 	else
 		echo "Checking for Yarn update..."
@@ -263,7 +263,7 @@ fixupService()
 fixupAPTKeys()
 {
 	if [ $(apt-key list 86E50310 | grep -c "86E5 0310") -eq 1 ]; then
-		apt-key export 86e50310 | sudo gpg --dearmour -o /usr/share/keyrings/yarnkey.gpg
+		apt-key export 86e50310 | gpg --dearmour -o /usr/share/keyrings/yarnkey.gpg
 		apt-key del 86E50310
 		sed -i "s|https://dl.yarnpkg.com/debian/|[arch=$\(dpkg --print-architecture\) signed-by=/usr/share/keyrings/yarnkey.gpg] &|" /etc/apt/sources.list.d/yarn.list
 	fi
