@@ -143,8 +143,8 @@ main() {
 	# 	exit 1;
 	# fi
 
-	# Install latest version of Node 18
-	n 18
+	# Install latest version of Node LTS
+	n lts
 	
 	echo "Stopping xo-server..."
 	ISACTIVE=$(systemctl is-active xo-server)
