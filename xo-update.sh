@@ -243,7 +243,7 @@ GetVersions()
 updateDependencies()
 {
 	echo "Checking for missing dependencies..."
-	declare -a depends=("lvm2" "cifs-utils")
+	declare -a depends=("lvm2" "cifs-utils" "openssl")
 
 	for i in "${depends[@]}"
 	do
