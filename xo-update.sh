@@ -262,11 +262,22 @@ fixupService()
 
 fixupAPTKeys()
 {
-	if [ $(apt-key list 86E50310 | grep -c "86E5 0310") -eq 1 ]; then
-		apt-key export 86e50310 | gpg --dearmour -o /usr/share/keyrings/yarnkey.gpg
-		apt-key del 86E50310
-		sed -i "s|https://dl.yarnpkg.com/debian/|[arch=$\(dpkg --print-architecture\) signed-by=/usr/share/keyrings/yarnkey.gpg] &|" /etc/apt/sources.list.d/yarn.list
-	fi
+    # Path for Yarn GPG keyring
+    keyring="/usr/share/keyrings/yarnkey.gpg"
+    listfile="/etc/apt/sources.list.d/yarn.list"
+
+    # If the old apt-key file exists, migrate it
+    if gpg --show-keys /etc/apt/trusted.gpg.d/*.gpg 2>/dev/null | grep -q "86E5 0310"; then
+        echo "Migrating Yarn GPG key to keyring..."
+        gpg --no-default-keyring --keyring /etc/apt/trusted.gpg.d/*.gpg \
+            --export 86E50310 | gpg --dearmor | tee "$keyring" >/dev/null
+        rm -f /etc/apt/trusted.gpg.d/*yarn*.gpg
+    fi
+
+    # Ensure sources list is using the signed-by option
+    if [ -f "$listfile" ]; then
+        sed -i "s|https://dl.yarnpkg.com/debian/|[arch=$(dpkg --print-architecture) signed-by=$keyring] &|" "$listfile"
+    fi
 }
 
 main "$@"
